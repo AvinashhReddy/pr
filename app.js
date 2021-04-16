@@ -12,7 +12,7 @@ app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
-app.listen(8000,()=>{console.log("server started!")})
+app.listen(process.env.PORT || 8000,()=>{console.log("server started!")})
 var payload
 const url='mongodb+srv://licious:licious@cluster0.ua32k.mongodb.net/licious?retryWrites=true&w=majority'
 mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology: true})
