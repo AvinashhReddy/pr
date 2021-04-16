@@ -1,7 +1,7 @@
 const express = require('express')
 const createToken=require('./createToken')
 const verify=require('./verify')
-const dataSchema=require('./Model')
+const dataSchema=require('./model')
 const cors=require('cors')
 const app=express()
 const mongoose=require('mongoose')
