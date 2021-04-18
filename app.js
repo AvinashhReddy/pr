@@ -12,6 +12,8 @@ app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
+
+
 app.listen(process.env.PORT || 8000,()=>{console.log("server started!")})
 var payload
 const url='mongodb+srv://licious:licious@cluster0.ua32k.mongodb.net/licious?retryWrites=true&w=majority'
@@ -20,17 +22,16 @@ const con=mongoose.connection
 con.on('open',()=>{
     console.log('connected!');
 })
-
+var test="start"
 app.post('/login',async(req,res)=>{
-
+  
    payload={
     "name": req.body.name,
     "iat": Math.round((new Date()).getTime()/1000)
   }
-  let data=await dataSchema.findOneAndUpdate({"name":req.body.name},{"token":createToken(payload),"tokenCreatedTime":Math.round((new Date()).getTime()/1000)})
-  await data.save()
-
-  res.send(data)
+  token=createToken(payload)
+   test=req.body.name
+  res.send(token)
   })
 
  app.post('/addusers',async(req,res)=>{
@@ -44,7 +45,9 @@ await newData.save()
 res.send("data added!")
  }) 
   
-
+app.get('/test',(req,res)=>{
+  res.send(test)
+})
 
 
 app.post('/insidelogin',verify,async(req,res)=>{

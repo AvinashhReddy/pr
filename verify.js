@@ -1,8 +1,10 @@
-function verify(req,res,next){
+function verify(req,res,next)
+{
     const bearerheader=req.headers['authorization'];
     if(typeof bearerheader!=='undefined'){
       const bearer=bearerheader.split(" ")
-      req.token=bearer[1]
+      token=bearer[1]
+      
       next()
     }
     else{
@@ -10,3 +12,4 @@ function verify(req,res,next){
     }
   }
   module.exports=verify
+  
