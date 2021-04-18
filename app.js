@@ -22,7 +22,7 @@ const con=mongoose.connection
 con.on('open',()=>{
     console.log('connected!');
 })
-var test="start"
+
 app.post('/login',async(req,res)=>{
   
    payload={
@@ -30,7 +30,7 @@ app.post('/login',async(req,res)=>{
     "iat": Math.round((new Date()).getTime()/1000)
   }
   token=createToken(payload)
-   test=req.body.name
+  
   res.send(token)
   })
 
@@ -45,30 +45,22 @@ await newData.save()
 res.send("data added!")
  }) 
   
-app.get('/test',(req,res)=>{
-  res.send(test)
-})
+
 
 
 app.post('/insidelogin',verify,async(req,res)=>{
-  let data= await dataSchema.find({"name":req.body.name})
-  if(req.token===data[0].token){
-    res.send("ACCESS GRANTED!")
-  }
-  else{   
-    res.send("ACCESS DENIED!")
-  }
-
+ 
+res.send("ACCESS GRANTED!")
 })
 
-app.post('/refreshToken',async(req,res)=>{
-  let data= await dataSchema.find({"name":req.body.name})
-  let difference=Math.round((new Date()).getTime()/1000)-data[0].tokenCreatedTime
-  if(difference>30){
-    data=await dataSchema.findOneAndUpdate({"name":req.body.name},{"token":createToken(payload),"tokenCreatedTime":Math.round((new Date()).getTime()/1000)})
-  await data.save()
+app.post('/refreshToken',verify,async(req,res)=>{
+  payload={
+    "name": req.body.name,
+    "iat": Math.round((new Date()).getTime()/1000)
   }
-  res.json(data[0])
+  token=createToken(payload)
+  
+  res.send(token)
   
 })
 
