@@ -63,7 +63,9 @@ app.post('/refreshToken',verify,async(req,res)=>{
   res.send(token)
   
 })
-
+app.post('/logout',verify,(req,res)=>{
+  res.send("loggedout")
+})
 
 
 
