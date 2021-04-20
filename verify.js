@@ -1,7 +1,10 @@
 var CryptoJS=require('crypto-js')
 require('dotenv').config();
 var SECRET_KEY=process.env.SECRET_KEY
-function decode(input){
+
+//function to decode base64
+function decode(input)
+{
   try {
   var words = CryptoJS.enc.Base64.parse(input);
   
@@ -14,18 +17,23 @@ function decode(input){
   }
   return result
 }
+
+//function to convert json to base64
 var base64object=function(input){
   var inputwords=CryptoJS.enc.Utf8.parse(JSON.stringify(input))
   var base64=CryptoJS.enc.Base64.stringify(inputwords)
   
   return base64
 }
+
+//function to validate token
 function verify(req,res,next)
 {
-    const bearerheader=req.headers['authorization'];
+    const bearerheader=req.headers['authorization'];  
     let validToken=false
     if(typeof bearerheader!=='undefined'){
       const bearer=bearerheader.split(" ")
+      if(bearer.length==2){
       var token=bearer[1].split('.')
       if(token.length==3){
 
@@ -43,14 +51,16 @@ function verify(req,res,next)
         }
        
       }
-  
+    }
     }
     if(validToken){
       next()
     }
     else{
-      res.send("Access Denied!")
+      res.sendStatus(403)
     }
   }
+
+
   module.exports=verify
   

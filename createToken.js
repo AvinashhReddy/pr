@@ -1,9 +1,9 @@
 require('dotenv').config();
 var CryptoJS=require('crypto-js')
-var SECRET_KEY=process.env.SECRET_KEY
+var SECRET_KEY=process.env.SECRET_KEY    //secretkey used for creating signature
 
 
-
+//function to convert json to base64
 var base64object=function(input){
     var inputwords=CryptoJS.enc.Utf8.parse(JSON.stringify(input))
     var base64=CryptoJS.enc.Base64.stringify(inputwords)
@@ -11,7 +11,7 @@ var base64object=function(input){
     return base64
 }
 
-
+//function to create token
 function createToken(payload){
     
 var header={'alg':'HS256','typ':'JWT'}

@@ -3,6 +3,7 @@ const createToken=require('./createToken')
 const verify=require('./verify')
 const dataSchema=require('./model')
 const cors=require('cors')
+const refreshToken=require('./refreshToken')
 const app=express()
 const mongoose=require('mongoose')
 const bodyParser = require('body-parser');
@@ -14,18 +15,19 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 
-app.listen(process.env.PORT || 8000,()=>{console.log("server started!")})
-var payload
-const url='mongodb+srv://licious:licious@cluster0.ua32k.mongodb.net/licious?retryWrites=true&w=majority'
+const server=app.listen(process.env.PORT || 8000,()=>{console.log("server started!")})
+
+/*const url='mongodb+srv://licious:licious@cluster0.ua32k.mongodb.net/licious?retryWrites=true&w=majority'
 mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology: true})
 const con=mongoose.connection
 con.on('open',()=>{
     console.log('connected!');
-})
+})*/
 
+//returns access token on Login
 app.post('/login',async(req,res)=>{
   
-   payload={
+  let payload={
     "name": req.body.name,
     "iat": Math.round((new Date()).getTime()/1000)
   }
@@ -33,6 +35,7 @@ app.post('/login',async(req,res)=>{
   
   res.send(token)
   })
+
 
  app.post('/addusers',async(req,res)=>{
   const newData=new dataSchema({
@@ -47,25 +50,29 @@ res.send("data added!")
   
 
 
-
+//accessing a protected route. verifies the token and returns "access granted" if valid
 app.post('/insidelogin',verify,async(req,res)=>{
  
-res.send("ACCESS GRANTED!")
+res.json("ACCESS GRANTED!")
 })
 
-app.post('/refreshToken',verify,async(req,res)=>{
-  payload={
-    "name": req.body.name,
-    "iat": Math.round((new Date()).getTime()/1000)
-  }
-  token=createToken(payload)
+
+//verifes the token and returns new token                    
+app.post('/refreshToken',verify,async(req,res)=>{      
+
+  res.send(refreshToken(req.headers['authorization']))
   
-  res.send(token)
-  
-})
+})                                            
+
+
+
+
+
+
+
 app.post('/logout',verify,(req,res)=>{
   res.send("loggedout")
 })
 
 
-
+module.exports=server
