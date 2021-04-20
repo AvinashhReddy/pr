@@ -1,11 +1,11 @@
 const express = require('express')
 const createToken=require('./createToken')
 const verify=require('./verify')
-const dataSchema=require('./model')
+//const dataSchema=require('./model')
 const cors=require('cors')
 const refreshToken=require('./refreshToken')
 const app=express()
-const mongoose=require('mongoose')
+//const mongoose=require('mongoose')
 const bodyParser = require('body-parser');
 app.use(cors())
 app.use(express.json())
@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 
-const server=app.listen(process.env.PORT || 8000,()=>{console.log("server started!")})
+const server= app.listen(process.env.PORT || 8000,()=>{console.log("server started!")})
 
 /*const url='mongodb+srv://licious:licious@cluster0.ua32k.mongodb.net/licious?retryWrites=true&w=majority'
 mongoose.connect(url,{useNewUrlParser:true, useUnifiedTopology: true})
@@ -23,6 +23,7 @@ const con=mongoose.connection
 con.on('open',()=>{
     console.log('connected!');
 })*/
+
 
 //returns access token on Login
 app.post('/login',async(req,res)=>{
@@ -37,16 +38,7 @@ app.post('/login',async(req,res)=>{
   })
 
 
- app.post('/addusers',async(req,res)=>{
-  const newData=new dataSchema({
-    name:req.body.name,
-    password:req.body.password
-    
-
-})
-await newData.save()
-res.send("data added!")
- }) 
+ 
   
 
 
