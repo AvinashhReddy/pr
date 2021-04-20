@@ -46,7 +46,11 @@ function verify(req,res,next)
           var signature=CryptoJS.enc.Base64.stringify(signatureHash)
           
           if(signature==token[2]){
+            currentTime=Math.round((new Date()).getTime()/1000)
+            tokenExpiration=payload.exp
+            if(tokenExpiration>=currentTime){
             validToken=true
+            }
           }
         }
        
@@ -57,7 +61,7 @@ function verify(req,res,next)
       next()
     }
     else{
-      res.sendStatus(403)
+      res.sendStatus(401)
     }
   }
 

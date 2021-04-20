@@ -19,15 +19,10 @@ function refreshToken(input)
     const bearer=bearerheader.split(" ")
     let token=bearer[1]
     payload=decode(token.split('.')[1])
-    currentTime=Math.round((new Date()).getTime()/1000)
-    tokenCreationTime=payload.iat
-    difference=currentTime-tokenCreationTime
-    console.log(difference)
-    if(difference>=30){
+    payload.exp=Math.round((new Date()).getTime()/1000)+30
 
-        payload.iat=Math.round((new Date()).getTime()/1000)
-        return createToken(payload)
-    }
-    return token
+    return createToken(payload)
+    
+    
 }
 module.exports=refreshToken

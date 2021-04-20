@@ -30,11 +30,12 @@ app.post('/login',async(req,res)=>{
   
   let payload={
     "name": req.body.name,
-    "iat": Math.round((new Date()).getTime()/1000)
+    "exp": Math.round((new Date()).getTime()/1000)+30
   }
   token=createToken(payload)
-  
-  res.send(token)
+  payload.exp+=50000
+  refToken=createToken(payload)
+  res.json({token,refToken})
   })
 
 
