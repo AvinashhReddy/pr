@@ -1,6 +1,6 @@
 const express = require('express')
 const createToken=require('./createToken')
-const verify=require('./verify')
+const verify=require('./verify').verify
 //const dataSchema=require('./model')
 const cors=require('cors')
 const refreshToken=require('./refreshToken')
@@ -66,6 +66,5 @@ app.post('/refreshToken',verify,async(req,res)=>{
 app.post('/logout',verify,(req,res)=>{
   res.send("loggedout")
 })
-
 
 module.exports=server

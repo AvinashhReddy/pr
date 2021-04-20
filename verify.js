@@ -49,6 +49,7 @@ function verify(req,res,next)
             currentTime=Math.round((new Date()).getTime()/1000)
             tokenExpiration=payload.exp
             if(tokenExpiration>=currentTime){
+  
             validToken=true
             }
           }
@@ -66,5 +67,5 @@ function verify(req,res,next)
   }
 
 
-  module.exports=verify
+  module.exports={verify,decode,base64object}
   

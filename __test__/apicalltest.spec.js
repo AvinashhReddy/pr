@@ -1,6 +1,6 @@
 const supertest = require('supertest');
 const app = require('../app');
-const createToken=require('../createToken')
+
 
 describe("Testing the JWT", () => { 
 
@@ -19,11 +19,8 @@ describe("Testing the JWT", () => {
                                  
 
   });
-  it("tests the token created", async() => {
-    let response=createToken({ "name": "licious","iat": Math.round((new Date()).getTime()/1000)})
-     numberOfParts=response.split(".").length
-     expect(numberOfParts).toBe(3)                       
-
-  });
+  
  
 });
+
+
