@@ -5,7 +5,7 @@ var SECRET_KEY=process.env.SECRET_KEY
 //function to decode base64
 function decode(input)
 {
-  try {
+  try { 
   var words = CryptoJS.enc.Base64.parse(input);
   
   var textString = CryptoJS.enc.Utf8.stringify(words);
@@ -48,7 +48,8 @@ function verify(req,res,next)
           if(signature==token[2]){
             currentTime=Math.round((new Date()).getTime()/1000)
             tokenExpiration=payload.exp
-            if(tokenExpiration>=currentTime){
+            if(tokenExpiration>=currentTime)
+            {         
   
             validToken=true
             }
@@ -68,4 +69,11 @@ function verify(req,res,next)
 
 
   module.exports={verify,decode,base64object}
+  
+
+  //payload { name: "aa",exp:1234,admin:}
+  //header {alg:hs25,typ:'jwt'}
+  //signature  (SECRET_KEY+ payload and header)
+
+  //protected
   

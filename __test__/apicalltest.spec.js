@@ -3,19 +3,45 @@ const app = require('../app');
 
 
 describe("Testing the JWT", () => { 
+var token;
+  it("tests the valid login ", async() => {
+
+    let response = await supertest(app).post('/login').send({userid:"user1",userpassword:"user1@123"})
+    token=response.body.token
+    expect(response.status).toBe(200)  
+                                 
+
+  });
+  it("tests the invalid login ", async() => {
+
+    let response = await supertest(app).post('/login').send({userid:"randomuser",userpassword:"randompassword"})
+    
+    expect(response.status).toBe(401)  
+                                 
+
+  });
 
     it("tests the valid token", async() => {
 
-    const response = await supertest(app).post('/insidelogin').set('Authorization','Bearer '+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidXNlcjEiLCJleHAiOjUwMDAwMTYxODkwNDU5OX0=.IgzZV3rQc/I/Bo7u2uk86cHf07u4sHvRP+g3aw3WCFM=')
+    let response = await supertest(app).post('/insidelogin').set('Authorization','Bearer '+token)
 
     expect(response.status).toBe(200)  
                                  
 
   });
   it("tests the invalid token", async() => {
-    const response=(await supertest(app).post('/insidelogin').set('Authorization','Bearer '+'abc.def.gji'))
+    let response=(await supertest(app).post('/insidelogin').set('Authorization','Bearer '+'abcdef.g.f'))
     
     expect(response.status).toBe(401)  
+                                 
+
+  });
+
+  it("tests the refresh endpoint", async() => {
+
+    let response = await supertest(app).post('/refreshToken').set('Authorization','Bearer '+token)
+
+    expect(response.status).toBe(200)  
                                  
 
   });
